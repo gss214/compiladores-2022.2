@@ -4,15 +4,15 @@
 %}
 
 sinal [-|+]
-integer {sinal}?[0-9]+\n
-float {sinal}?[0-9]+[.][0-9]*\n
+inteiro {sinal}?[0-9]+\n
+real {sinal}?[0-9]+[.][0-9]*\n
 id [a-z][a-z0-9]*\n
 comentario (\/\/).*\n
 outro .*\n
 
 %%
-{integer}			{printf("INTEIRO\n");}
-{float}				{printf("NUMERO REAL\n");}
+{inteiro}			{printf("INTEIRO\n");}
+{real}				{printf("NUMERO REAL\n");}
 {id}				{printf("IDENTIFICADOR\n");}
 {comentario} 		{printf("COMENTARIO\n");}
 {outro}				{printf("NAO IDENTIFICADO\n");}
