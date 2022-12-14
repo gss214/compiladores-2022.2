@@ -6,7 +6,7 @@
 sinal [-|+]
 inteiro {sinal}?[0-9]+\n
 real {sinal}?[0-9]+[.][0-9]*\n
-id [a-z][a-z0-9]*\n
+id [a-zA-Z][a-zA-Z0-9]*\n
 comentario (\/\/).*\n
 outro .*\n
 
