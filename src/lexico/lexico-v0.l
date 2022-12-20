@@ -12,7 +12,7 @@ inteiro             {sinal}?{digito}+\n
 real                {sinal}?{digito}+[.]{digito}*\n
 id                  [a-zA-Z_][a-zA-Z0-9_]*\n
 comentario          (\/\/).*\n
-comentario-em-bloco ([/][*]([^*]|([*][^/]))*[*]+[/]).*\n
+comentario-em-bloco [/][*]([^*]|([*]+[^*/]))*[*]+[/]\n
 outro               .*\n
 
 %%
