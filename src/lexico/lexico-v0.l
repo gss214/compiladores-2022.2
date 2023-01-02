@@ -5,7 +5,7 @@
 
 /* auxiliares */
 digito              [0-9]
-sinal               [-|+]
+sinal               [-+]
 
 /* identificadores */
 inteiro             {sinal}?{digito}+\n
