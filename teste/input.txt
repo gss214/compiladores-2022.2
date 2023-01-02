@@ -1,0 +1,19 @@
+9
++9
+-9
+9.0
++9.0
+-9.0
++a
+-a 
+var
+var2
+1var
+_var
+____________var
+//é um comentario 
+/é um comentario?
+/*comentario em bloco valido*/
+*/******comentario em bloco invalido***/*
+/*******comentario em bloco valido****/
+/***/
