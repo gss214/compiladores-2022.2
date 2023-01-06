@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include "y.tab.h"
 %}
 
 /* auxiliares */
@@ -8,28 +9,25 @@ digito              [0-9]
 sinal               [-+]
 
 /* identificadores */
-inteiro             {sinal}?{digito}+\n
-real                {sinal}?{digito}+[.]{digito}*\n
-id                  [a-zA-Z_][a-zA-Z0-9_]*\n
 comentario          (\/\/).*\n
-comentario-em-bloco [/][*]([^*]|([*]+[^*/]))*[*]+[/]\n
-outro               .*\n
+comentario_em_bloco [/][*]([^*]|([*]+[^*/]))*[*]+[/]\n
+exit_cmd            "exit"
+id                  [a-zA-Z_][a-zA-Z0-9_]*
+inteiro             {digito}+
+real                {digito}+[.]{digito}+
+outro               .|\n
+output              "output"
 
 %%
-{inteiro}			        {printf("NUMERO INTEIRO\n");}
-{real}		        		{printf("NUMERO REAL\n");}
-{id}        				{printf("IDENTIFICADOR\n");}
-{comentario} 		        {printf("COMENTARIO\n");}
-{comentario-em-bloco} 		{printf("COMENTARIO EM BLOCO\n");}
-{outro}	        			{printf("NAO IDENTIFICADO\n");}
+{comentario} 		        {return comentario;}
+{comentario_em_bloco} 		{return comentario_em_bloco;}
+{exit_cmd}                  {return exit_cmd;}
+{id}        				{return id;}
+{inteiro}			        {return inteiro;}
+{real}		        		{return real;}
+{outro}	        			{return yytext[0];}
+{output}                    {return output;}
 %%
-
-int yywrap ();
-
-int main() {
-	printf("Informe um token e tecle <enter>:\n");
-	yylex(); /* scanner gerado por Flex */
-}
 
 int yywrap() {
 	return 1;

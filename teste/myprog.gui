@@ -1,0 +1,3 @@
+gui = 1 1 +;
+output gui;
+exit;
