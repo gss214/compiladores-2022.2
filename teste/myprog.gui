@@ -1,1 +1,9 @@
-{gui = 1}
+let 
+    integer n,x,z. 
+in 
+    read n;
+    write n;
+    while 19 do
+        read x;
+    end;
+end

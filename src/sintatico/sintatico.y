@@ -6,35 +6,45 @@ void yyerror(char*);
 int yylex(void);
 %}
 
-%token inteiro
-%token real
-%token id
-%token comentario
-%token comentario_em_bloco
-%token exit_cmd
-%token print_cmd
+%start program
+
+%token DO
+%token END 
+%token IN 
+%token IDENTIFIER
+%token INTEGER 
+%token LET 
+%token READ 
+%token NUMBER
+%token WHILE
+%token WRITE
 
 %%
-line        : programa '\n'                  {printf("Programa sintaticamente correto!\n");}
-            | print_cmd exp '\n'             {printf("PRINT NUM\n");}
-            | line print_cmd exp '\n'        {printf("PRINT EXP\n");}
-            | exit_cmd '\n'                  {exit(0);}
-            ;
 
-programa    : '{' cmd_list '}'		{;}
-            ;
+program:        LET declarations IN commands END        {printf(":)\n");}  
+                ;
 
-cmd_list    : cmd                   {;}
-            | cmd ';' cmd_list      {;}
-            ;
+id_seq :        /* empty */
+                | id_seq IDENTIFIER ','             
+                ;
 
-cmd         : id '=' exp            {;}
-            ;
+declarations:   /* empty */ 
+                | INTEGER id_seq IDENTIFIER '.'         {printf("DECLARANDO\n");}
+                ;
 
-exp         : inteiro               {;}
-            | id                    {;}
-		    | exp exp '+'       	{;}
-            ;
+commands:       /* empty */
+                | commands command ';'                               
+                ;
+
+command:        READ IDENTIFIER                         {printf("LENDO\n");}
+                | WRITE exp                             {printf("PRINTANDO\n");}
+                | WHILE exp DO commands END             {printf("REPETINDO\n");}
+                ;
+
+exp:            NUMBER
+                | IDENTIFIER
+                ;
+
 
 %%
 int main(void) {
