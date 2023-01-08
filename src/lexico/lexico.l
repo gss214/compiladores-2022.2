@@ -1,6 +1,4 @@
 %{
-#include <stdio.h>
-#include <stdlib.h>
 #include "y.tab.h"
 %}
 
@@ -11,22 +9,24 @@ sinal               [-+]
 /* identificadores */
 comentario          (\/\/).*\n
 comentario_em_bloco [/][*]([^*]|([*]+[^*/]))*[*]+[/]\n
+espaco		        [ \t]+
 exit_cmd            "exit"
 id                  [a-zA-Z_][a-zA-Z0-9_]*
 inteiro             {digito}+
 real                {digito}+[.]{digito}+
 outro               .|\n
-output              "output"
+print_cmd			"print"
 
 %%
 {comentario} 		        {return comentario;}
 {comentario_em_bloco} 		{return comentario_em_bloco;}
+{espaco}            		{;}
 {exit_cmd}                  {return exit_cmd;}
+{print_cmd}					{return print_cmd;}
 {id}        				{return id;}
 {inteiro}			        {return inteiro;}
 {real}		        		{return real;}
 {outro}	        			{return yytext[0];}
-{output}                    {return output;}
 %%
 
 int yywrap() {
