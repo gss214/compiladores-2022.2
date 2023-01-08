@@ -1,9 +1,14 @@
+// Declaracoes
 let 
     integer n,x,z. 
+
+/* Comandos 
+    Comandos de novo
+*/
 in 
     read n;
     write n;
-    while 19 do
+    while 1.1 do
         read x;
     end;
 end

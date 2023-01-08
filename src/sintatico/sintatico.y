@@ -1,6 +1,5 @@
 %{
-#include <stdio.h> 
-#include <stdlib.h>
+#include <stdio.h>
 
 void yyerror(char*);
 int yylex(void);
@@ -10,6 +9,7 @@ int yylex(void);
 
 %token DO
 %token END 
+%token FLOAT
 %token IN 
 %token IDENTIFIER
 %token INTEGER 
@@ -44,7 +44,6 @@ command:        READ IDENTIFIER                         {printf("LENDO\n");}
 exp:            NUMBER
                 | IDENTIFIER
                 ;
-
 
 %%
 int main(void) {

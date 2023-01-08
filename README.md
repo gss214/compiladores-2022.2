@@ -2,7 +2,7 @@
  
 # Analisador léxico
 ```
-flex src/lexico/lexico &&
+flex src/lexico/lexico.l &&
 gcc lex.yy.c &&
 ./a.out < teste/input
 ```
