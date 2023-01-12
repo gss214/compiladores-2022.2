@@ -6,6 +6,7 @@ TARGET ?= Run
 
 BUILD_DIR ?= build
 SRC_DIR ?= src
+MKDIR_P ?= mkdir -p
 
 $(TARGET):
 	$(MKDIR_P) $(BUILD_DIR)
@@ -16,5 +17,3 @@ $(TARGET):
 .PHONY: clean
 clean:
 	$(RM) -r $(BUILD_DIR) $(TARGET)
-
-MKDIR_P ?= mkdir -p
