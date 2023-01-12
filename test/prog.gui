@@ -1,10 +1,10 @@
 // Declaracoes
 let 
-    integer n,x,z. 
+    integer n, x, z. 
+    integer a, b, c.
+    float q, w, e.  
 
-/* Comandos 
-    Comandos de novo
-*/
+/* Comandos */
 in 
     read n;
     write n;

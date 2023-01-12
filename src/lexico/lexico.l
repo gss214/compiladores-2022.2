@@ -1,6 +1,6 @@
 %{
 #include <stdio.h>
-#include "y.tab.h"
+#include "sintatico.h"
 %}
 
 /* auxiliares */

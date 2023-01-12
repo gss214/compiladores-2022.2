@@ -9,5 +9,5 @@ gcc lex.yy.c &&
 
 # Analisador sintático
 ```
-sintatico.sh
+make && ./Run test/prog.gui
 ```
