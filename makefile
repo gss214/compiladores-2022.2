@@ -1,6 +1,6 @@
 CXX=gcc
 
-CFLAGS=-std=c11
+CFLAGS=-std=gnu99
 
 TARGET ?= Run
 
