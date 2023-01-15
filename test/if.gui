@@ -1,0 +1,8 @@
+let 
+in 
+    if (a b =) then
+        write 1;
+    else
+        write 0;
+    fi;
+end
