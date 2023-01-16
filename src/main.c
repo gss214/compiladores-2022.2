@@ -1,6 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
-#include "test.h"
 
 void parse_file(char file[]);
 
@@ -10,7 +8,7 @@ int main(int argc, char **argv) {
         parse_file(argv[1]);
 
     else
-        run_all_tests();
+        printf("Nenhum arquivo de entrada fornecido\n");
 
     return 0;
 }

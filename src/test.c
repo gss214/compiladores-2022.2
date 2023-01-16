@@ -13,7 +13,7 @@
 
 void parse_file(char file[]);
 
-void static run_all_tests() {
+void run_all_tests() {
 
     DIR* d;
     struct dirent* dir;
@@ -32,4 +32,11 @@ void static run_all_tests() {
 
         closedir(d);
     }
+}
+
+int main() {
+
+    run_all_tests();    
+
+    return 0;
 }
