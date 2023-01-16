@@ -11,3 +11,8 @@ gcc lex.yy.c &&
 ```
 make && ./Run test/prog.gui
 ```
+
+## Testes unitários
+```
+make -B test && ./Test
+```

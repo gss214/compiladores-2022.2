@@ -10,21 +10,31 @@ int yylex(void);
 
 %start program
 
+%token ASSGNOP
 %token DO
+%token ELSE
 %token END 
+%token FI
 %token FLOAT
-%token IN 
 %token IDENTIFIER
+%token IF
+%token IN 
 %token INTEGER 
 %token LET 
-%token READ 
 %token NUMBER
+%token READ 
+%token SKIP
+%token THEN
 %token WHILE
 %token WRITE
 
+%left '-' '+'
+%left '*' '/'
+%right '^'
+
 %%
 
-program:        LET declarations IN commands END                {printf(":)\n");}  
+program:        LET declarations IN commands END                {printf("\e[0;32m" ":)\n" "\e[0m");}  
                 ;
 
 id_seq :        /* empty */
@@ -40,13 +50,25 @@ commands:       /* empty */
                 | commands command ';'                               
                 ;
 
-command:        READ IDENTIFIER                                 {printf("LENDO\n");}
+command:        SKIP                                            {printf("PULANDO\n");}
+                | READ IDENTIFIER                               {printf("LENDO\n");}
                 | WRITE exp                                     {printf("PRINTANDO\n");}
+                | IDENTIFIER ASSGNOP exp                        {printf("ATRIBUICAO\n");}
+                | IF exp THEN commands ELSE commands FI         {printf("CONDICAO\n");}
                 | WHILE exp DO commands END                     {printf("REPETINDO\n");}
                 ;
 
 exp:            NUMBER
                 | IDENTIFIER
+                | exp exp '<'
+                | exp exp '='
+                | exp exp '>'
+                | exp exp '+'
+                | exp exp '-'
+                | exp exp '*'
+                | exp exp '/'
+                | exp exp '^'
+                | '(' exp ')'
                 ;
 
 %%
@@ -68,6 +90,6 @@ void parse_file(char file[]) {
 }
 
 void yyerror(char *s) {
-	printf("Problema com a analise sintatica!\n");
-    printf("Erro: %s\n", s);
+	printf("\e[0;31m" "Problema com a analise sintatica!\n");
+    printf("Erro: %s\n" "\e[0m", s);
 }

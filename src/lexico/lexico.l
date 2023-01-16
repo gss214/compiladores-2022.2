@@ -16,15 +16,21 @@ NUMBER_INTEGER             	{SIGN}?{DIGIT}+
 SPACE						[ \t\n]+
 
 %%
+":="						{return ASSGNOP;}
 do							{return DO;}
+else						{return ELSE;}
 end			    			{return END;}
+fi							{return FI;}
+float						{return FLOAT;}
+if 							{return IF;}
 in		    				{return IN;}
 integer						{return INTEGER;}
-float						{return FLOAT;}
 let			    			{return LET;}
 read			    		{return READ;}
-write						{return WRITE;}
+skip						{return SKIP;}
+then						{return THEN;}
 while						{return WHILE;}
+write						{return WRITE;}
 
 {COMMENT_LINE}				{printf("Comentario em linha\n");}
 {COMMENT_BLOCK}				{printf("Comentario em bloco\n");}
