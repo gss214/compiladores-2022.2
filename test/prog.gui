@@ -1,0 +1,24 @@
+// Declaracoes
+let 
+    integer n, x, z. 
+    integer a, b, c.
+    float q, w, e.  
+
+/* Comandos */
+in 
+    read n;
+    write n;
+    while 1.1 do
+        read x;
+    end;
+
+    a := n;
+    b := b 1 +;
+
+    if (a b =) then
+        write a;
+    else
+        write b;
+    end;
+
+end
