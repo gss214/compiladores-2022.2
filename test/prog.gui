@@ -19,5 +19,6 @@ in
         write a;
     else
         write b;
-    fi;
+    end;
+
 end

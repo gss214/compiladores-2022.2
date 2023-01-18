@@ -13,8 +13,7 @@ int yylex(void);
 %token ASSGNOP
 %token DO
 %token ELSE
-%token END 
-%token FI
+%token END
 %token FLOAT
 %token IDENTIFIER
 %token IF
@@ -54,7 +53,8 @@ command:        SKIP                                            {printf("PULANDO
                 | READ IDENTIFIER                               {printf("LENDO\n");}
                 | WRITE exp                                     {printf("PRINTANDO\n");}
                 | IDENTIFIER ASSGNOP exp                        {printf("ATRIBUICAO\n");}
-                | IF exp THEN commands ELSE commands FI         {printf("CONDICAO\n");}
+                | IF exp THEN commands ELSE commands END        {printf("CONDICAO\n");}
+                | IF exp THEN commands END                      {printf("CONDICAO\n");}
                 | WHILE exp DO commands END                     {printf("REPETINDO\n");}
                 ;
 

@@ -4,5 +4,9 @@ in
         write 1;
     else
         write 0;
-    fi;
+    end;
+
+    if (a b =) then 
+        write b;
+    end;
 end

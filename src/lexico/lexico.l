@@ -20,7 +20,6 @@ SPACE						[ \t\n]+
 do							{return DO;}
 else						{return ELSE;}
 end			    			{return END;}
-fi							{return FI;}
 float						{return FLOAT;}
 if 							{return IF;}
 in		    				{return IN;}
