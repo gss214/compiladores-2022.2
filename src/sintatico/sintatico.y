@@ -2,40 +2,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> 
-// #include "symbol-table.h"
+#include "../src/sintatico/symbol_table.h"
+#include "../src/utils.h"
+
 #define YYDEBUG 1
 
-struct symrec {
-    char* name; // name of symbol
-    struct symrec* next; // link field
-};
-
-typedef struct symrec symrec;
-
-// Initialization of the list to empty
-symrec* sym_table = (symrec *) 0;
-symrec* putsym(char* sym_name);
-symrec* getsym(char* sym_name);
 unsigned int errors = 0;
 
-// Put an identifier into the table
-symrec* putsym(char* sym_name) {
-    symrec* ptr = (symrec *) malloc (sizeof(symrec));
-    ptr->name = (char *) malloc(strlen(sym_name) + 1);
-    strcpy(ptr->name, sym_name);
-    ptr->next = (struct symrec *) sym_table;
-    sym_table = ptr;
-    return ptr;
-}
-
-// Returns a pointer to the symbol table entry corresponding to an identifier
-symrec* getsym(char* sym_name) {
-    for (symrec* ptr = sym_table; ptr != (symrec *) 0; ptr = (symrec *) ptr->next)
-        if (strcmp(ptr->name, sym_name) == 0) return ptr;
-    return 0;
-}
-
-// installation of an indentifier in the symbol table
+// Installation of an indentifier in the symbol table
 void install(char* sym_name) { 
     symrec* s;
     s = getsym(sym_name);
@@ -46,7 +20,7 @@ void install(char* sym_name) {
     }
 }
 
-// performing context checking
+// Performing context checking
 void context_check(char* sym_name) {
     if (getsym(sym_name) == 0)
         printf("%s nao foi declarado\n", sym_name);
@@ -87,7 +61,7 @@ int yylex(void);
 
 %%
 
-program:        LET declarations IN commands END                {printf("\e[0;32m" ":)\n" "\e[0m");}  
+program:        LET declarations IN commands END                {printf(GRN ":)\n" RESET);}  
                 ;
 
 id_seq:         /* empty */
@@ -95,8 +69,8 @@ id_seq:         /* empty */
                 ;
 
 declarations:   /* empty */ 
-                | declarations INTEGER id_seq IDENTIFIER '.'    {printf("S2: %s\n", $4); install($4);}
-                | declarations FLOAT id_seq IDENTIFIER '.'      {printf("S2: %s\n", $4); install($4);}
+                | declarations INTEGER id_seq IDENTIFIER ';'    {printf("S2: %s\n", $4); install($4);}
+                | declarations FLOAT id_seq IDENTIFIER ';'      {printf("S2: %s\n", $4); install($4);}
                 ;
 
 commands:       /* empty */

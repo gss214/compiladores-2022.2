@@ -1,6 +1,6 @@
 let 
-    integer x.
-    float y.
+    integer x;
+    float y;
 in 
     x := 33;
     write x;
