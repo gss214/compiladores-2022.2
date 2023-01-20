@@ -1,0 +1,11 @@
+let 
+    integer x.
+    float y.
+in 
+    x := 33;
+    write x;
+    y := 3.333;
+    write y;
+    x := y;
+    write x;
+end
