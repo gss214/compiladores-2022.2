@@ -2,8 +2,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "utils.h"
-
-void parse_file(char file[]);
+#include "parser.h"
 
 void run_all_tests() {
 

@@ -5,19 +5,17 @@
 #include <string.h>
 
 struct symrec {
-    char* name; // name of symbol
-    struct symrec* next; // link field
+    char* name; // nome do simbolo
+    struct symrec* next; // ponteiro para o proximo
 };
 
 typedef struct symrec symrec;
 
-// Initialization of the list to empty
+// Inicializa a lista vazia
 static symrec* sym_table = (symrec *) 0;
-symrec* putsym(char* sym_name);
-symrec* getsym(char* sym_name);
 
-// Put an identifier into the table
-inline symrec* putsym(char* sym_name) {
+// Adiciona um identificador a lista
+static inline symrec* putsym(char* sym_name) {
     symrec* ptr = (symrec *) malloc (sizeof(symrec));
     ptr->name = (char *) malloc(strlen(sym_name) + 1);
     strcpy(ptr->name, sym_name);
@@ -26,8 +24,8 @@ inline symrec* putsym(char* sym_name) {
     return ptr;
 }
 
-// Returns a pointer to the symbol table entry corresponding to an identifier
-inline symrec* getsym(char* sym_name) {
+// Retorna um ponteiro para o simbolo com nome dado
+static inline symrec* getsym(char* sym_name) {
     for (symrec* ptr = sym_table; ptr != (symrec *) 0; ptr = (symrec *) ptr->next)
         if (strcmp(ptr->name, sym_name) == 0) return ptr;
     return 0;

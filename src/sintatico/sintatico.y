@@ -2,31 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h> 
-#include "../src/sintatico/symbol_table.h"
+#include "../src/parser.h"
+#include "../src/symbol_table.h"
 #include "../src/utils.h"
 
 #define YYDEBUG 1
-
-unsigned int errors = 0;
-
-// Installation of an indentifier in the symbol table
-void install(char* sym_name) { 
-    symrec* s;
-    s = getsym(sym_name);
-    if (s == 0) s = putsym(sym_name);
-    else {
-        errors++;
-        printf("%s ja esta definido\n", sym_name);
-    }
-}
-
-// Performing context checking
-void context_check(char* sym_name) {
-    if (getsym(sym_name) == 0)
-        printf("%s nao foi declarado\n", sym_name);
-}
-
-extern FILE* yyin; // Arquivo de entrada
 
 void yyerror(char*);
 int yylex(void);
@@ -69,8 +49,8 @@ id_seq:         /* empty */
                 ;
 
 declarations:   /* empty */ 
-                | declarations INTEGER id_seq IDENTIFIER ';'    {printf("S2: %s\n", $4); install($4);}
-                | declarations FLOAT id_seq IDENTIFIER ';'      {printf("S2: %s\n", $4); install($4);}
+                | declarations INTEGER id_seq IDENTIFIER ';'    {printf("S4: %s\n", $4); install($4);}
+                | declarations FLOAT id_seq IDENTIFIER ';'      {printf("S4: %s\n", $4); install($4);}
                 ;
 
 commands:       /* empty */
@@ -100,22 +80,6 @@ exp:            NUMBER
                 ;
 
 %%
-
-/* Abre e faz parse no arquivo fornecido */
-void parse_file(char file[]) {
- 
-    yyin = fopen(file, "r");
- 
-    if (yyin == NULL) {
-        printf("Não foi possível abrir o arquivo\n");
-        exit(1);
-    }
-    
-    while (feof(yyin) == 0)
-        yyparse();
-
-    fclose(yyin);
-}
 
 void yyerror(char *s) {
 	printf("\e[0;31m" "Problema com a analise sintatica!\n");
