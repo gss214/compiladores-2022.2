@@ -1,8 +1,12 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h> 
+#include "../src/parser.h"
+#include "../src/symbol_table.h"
+#include "../src/utils.h"
 
-extern FILE* yyin; // Arquivo de entrada
+#define YYDEBUG 1
 
 void yyerror(char*);
 int yylex(void);
@@ -10,12 +14,16 @@ int yylex(void);
 
 %start program
 
-%token ASSGNOP
+%union { // SEMANTIC RECORD
+    char* id; // For returning identifiers
+} 
+
+%token <id> ASSGNOP
 %token DO
 %token ELSE
 %token END
 %token FLOAT
-%token IDENTIFIER
+%token <id> IDENTIFIER
 %token IF
 %token IN 
 %token INTEGER 
@@ -33,16 +41,16 @@ int yylex(void);
 
 %%
 
-program:        LET declarations IN commands END                {printf("\e[0;32m" ":)\n" "\e[0m");}  
+program:        LET declarations IN commands END                {printf(GRN ":)\n" RESET);}  
                 ;
 
-id_seq :        /* empty */
-                | id_seq IDENTIFIER ','             
+id_seq:         /* empty */
+                | id_seq IDENTIFIER ','                         {printf("S2: %s\n", $2); install($2);}
                 ;
 
 declarations:   /* empty */ 
-                | declarations INTEGER id_seq IDENTIFIER '.'    {printf("DECLARANDO INT\n");}
-                | declarations FLOAT id_seq IDENTIFIER '.'      {printf("DECLARANDO FLOAT\n");}
+                | declarations INTEGER id_seq IDENTIFIER ';'    {printf("S4: %s\n", $4); install($4);}
+                | declarations FLOAT id_seq IDENTIFIER ';'      {printf("S4: %s\n", $4); install($4);}
                 ;
 
 commands:       /* empty */
@@ -50,16 +58,16 @@ commands:       /* empty */
                 ;
 
 command:        SKIP                                            {printf("PULANDO\n");}
-                | READ IDENTIFIER                               {printf("LENDO\n");}
+                | READ IDENTIFIER                               {printf("LENDO\n"); context_check($2);}
                 | WRITE exp                                     {printf("PRINTANDO\n");}
-                | IDENTIFIER ASSGNOP exp                        {printf("ATRIBUICAO\n");}
+                | IDENTIFIER ASSGNOP exp                        {printf("ATRIBUINDO\n"); context_check($2);}
                 | IF exp THEN commands ELSE commands END        {printf("CONDICAO\n");}
                 | IF exp THEN commands END                      {printf("CONDICAO\n");}
                 | WHILE exp DO commands END                     {printf("REPETINDO\n");}
                 ;
 
 exp:            NUMBER
-                | IDENTIFIER
+                | IDENTIFIER                                    {context_check($1);}
                 | exp exp '<'
                 | exp exp '='
                 | exp exp '>'
@@ -72,22 +80,6 @@ exp:            NUMBER
                 ;
 
 %%
-
-/* Abre e faz parse no arquivo fornecido */
-void parse_file(char file[]) {
- 
-    yyin = fopen(file, "r");
- 
-    if (yyin == NULL) {
-        printf("Não foi possível abrir o arquivo\n");
-        exit(1);
-    }
-    
-    while (feof(yyin) == 0)
-        yyparse();
-
-    fclose(yyin);
-}
 
 void yyerror(char *s) {
 	printf("\e[0;31m" "Problema com a analise sintatica!\n");

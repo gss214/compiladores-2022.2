@@ -1,5 +1,6 @@
 %{
 #include <stdio.h>
+#include <string.h>
 #include "sintatico.h"
 %}
 
@@ -33,7 +34,7 @@ write						{return WRITE;}
 
 {COMMENT_LINE}				{printf("Comentario em linha\n");}
 {COMMENT_BLOCK}				{printf("Comentario em bloco\n");}
-{ID}						{return IDENTIFIER;}
+{ID}                        {yylval.id = (char *) strdup(yytext); return(IDENTIFIER);}
 {NUMBER_FLOAT}				{return NUMBER;}
 {NUMBER_INTEGER}			{return NUMBER;}
 {SPACE}						{;}

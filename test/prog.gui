@@ -1,8 +1,8 @@
 // Declaracoes
 let 
-    integer n, x, z. 
-    integer a, b, c.
-    float q, w, e.  
+    integer n, x, z;
+    integer a, b, c;
+    float q, w, e;
 
 /* Comandos */
 in 

@@ -1,6 +1,5 @@
 #include <stdio.h>
-
-void parse_file(char file[]);
+#include "parser.h"
 
 int main(int argc, char **argv) {
 
