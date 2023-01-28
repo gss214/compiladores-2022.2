@@ -1,7 +1,10 @@
 let
+    integer a, b;
 in
-    while 1 do
+    while (a b =) do
+        read a;
+        read b;
         write 1;
     end;
-
+    write 0;
 end

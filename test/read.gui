@@ -1,4 +1,6 @@
 let
+    integer a;
 in
     read a;
+    write a;
 end
