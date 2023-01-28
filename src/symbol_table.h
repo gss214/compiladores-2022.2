@@ -3,9 +3,11 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include "code_generator.h"
 
 struct symrec {
     char* name; // nome do simbolo
+    int offset; // deslocamento dos dados
     struct symrec* next; // ponteiro para o proximo
 };
 
@@ -19,6 +21,7 @@ static inline symrec* putsym(char* sym_name) {
     symrec* ptr = (symrec *) malloc (sizeof(symrec));
     ptr->name = (char *) malloc(strlen(sym_name) + 1);
     strcpy(ptr->name, sym_name);
+    ptr->offset = data_location();
     ptr->next = (struct symrec *) sym_table;
     sym_table = ptr;
     return ptr;

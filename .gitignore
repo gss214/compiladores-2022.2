@@ -56,5 +56,6 @@ dkms.conf
 
 # Generated files
 build
+out
 Run
 Test

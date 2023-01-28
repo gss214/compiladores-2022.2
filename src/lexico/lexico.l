@@ -32,11 +32,11 @@ then						{return THEN;}
 while						{return WHILE;}
 write						{return WRITE;}
 
-{COMMENT_LINE}				{printf("Comentario em linha\n");}
-{COMMENT_BLOCK}				{printf("Comentario em bloco\n");}
-{ID}                        {yylval.id = (char *) strdup(yytext); return(IDENTIFIER);}
-{NUMBER_FLOAT}				{return NUMBER;}
-{NUMBER_INTEGER}			{return NUMBER;}
+{COMMENT_LINE}				{;}
+{COMMENT_BLOCK}				{;}
+{ID}                        {yylval.id = (char *) strdup(yytext); return IDENTIFIER;}
+{NUMBER_FLOAT}				{yylval.intval = atoi(yytext); return NUMBER;} /* @TODO: float */
+{NUMBER_INTEGER}			{yylval.intval = atoi(yytext); return NUMBER;}
 {SPACE}						{;}
 .							{return(yytext[0]);}
 %%
