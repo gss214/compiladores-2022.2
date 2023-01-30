@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include <string.h>
+#include "../src/scanner.h"
 #include "sintatico.h"
 %}
 
@@ -34,7 +35,7 @@ write						{return WRITE;}
 
 {COMMENT_LINE}				{;}
 {COMMENT_BLOCK}				{;}
-{ID}                        {yylval.id = (char *) strdup(yytext); return IDENTIFIER;}
+{ID}                        {yylval.id = (char *) insert_yyval(yytext); return IDENTIFIER;}
 {NUMBER_FLOAT}				{yylval.intval = atoi(yytext); return NUMBER;} /* @TODO: float */
 {NUMBER_INTEGER}			{yylval.intval = atoi(yytext); return NUMBER;}
 {SPACE}						{;}
