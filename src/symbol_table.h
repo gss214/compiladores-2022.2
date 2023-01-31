@@ -34,4 +34,13 @@ static inline symrec* getsym(char* sym_name) {
     return 0;
 }
 
+// Esvazia a lista
+static inline void clear_table(symrec* ptr) {
+    if (ptr == NULL) return;
+
+    clear_table(ptr->next);
+    free(ptr->name);
+    free(ptr);
+}
+
 #endif // SYMBOL_TABLE_H

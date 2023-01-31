@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h> 
 #include "../src/parser.h"
+#include "../src/scanner.h"
 #include "../src/symbol_table.h"
 #include "../src/utils.h"
 
@@ -45,7 +46,12 @@ program:        LET
                     declarations
                 IN                                              {gen_code(DATA, sym_table->offset);}
                     commands
-                END                                             {gen_code(HALT, 0); fetch_execute_cycle(); YYACCEPT;}
+                END                                             {gen_code(HALT, 0); 
+                                                                 fetch_execute_cycle();
+                                                                 clear_table(sym_table);
+                                                                 clear_label(lbs_list);
+                                                                 clear_yyval(str_list);
+                                                                 YYACCEPT;}
                 ;
 
 id_seq:         /* empty */
