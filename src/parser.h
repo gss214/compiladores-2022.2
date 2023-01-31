@@ -10,17 +10,31 @@ extern FILE* yyin;
 static unsigned int errors = 0;
 
 // If e while
-struct lbs {
+typedef struct lbs {
     int for_goto;
     int for_jmp_false;
-};
+    struct lbs* next;
+} lbs;
+
+// Inicializa a lista de labels
+static lbs* lbs_list = NULL;
 
 // Aloca espaço para as labels
-static struct lbs * newlblrec() {
-    return (struct lbs *) malloc(sizeof(struct lbs));
+static struct lbs* newlblrec() {
+    lbs* ptr = (struct lbs *) malloc(sizeof(struct lbs));
+    ptr->next = lbs_list;
+    lbs_list = ptr;
+    
+    return ptr;
 }
 
-int yyparse();
+// Esvazia a lista de labels
+static inline void clear_label(lbs* ptr) {
+    if (ptr == NULL) return;
+
+    clear_label(ptr->next);
+    free(ptr);
+} 
 
 // Insere um identificador na tabela de simbolos
 static inline void install(char* sym_name) { 
@@ -43,6 +57,8 @@ static inline void context_check(enum code_ops operation, char* sym_name) {
     else gen_code(operation, identifier->offset);
 }
 
+int yyparse();
+
 // Abre e faz parse no arquivo fornecido
 static inline void parse_file(char file[]) {
  
@@ -53,8 +69,7 @@ static inline void parse_file(char file[]) {
         exit(1);
     }
     
-    while (feof(yyin) == 0)
-        yyparse();
+    yyparse();
 
     fclose(yyin);
 }
