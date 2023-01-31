@@ -49,8 +49,9 @@ program:        LET
                 END                                             {gen_code(HALT, 0); 
                                                                  fetch_execute_cycle();
                                                                  clear_table(sym_table);
-                                                                 clear_label(lbs_list);
-                                                                 clear_yyval(str_list);
+                                                                 clear_label_list(lbs_list);
+                                                                 clear_yyval_list(str_list);
+                                                                 report_errors();
                                                                  YYACCEPT;}
                 ;
 
@@ -71,13 +72,13 @@ command:        SKIP
                 | READ IDENTIFIER                               {context_check(READ_INT, $2);}
                 | WRITE exp                                     {gen_code(WRITE_INT, 0);}
                 | IDENTIFIER ASSGNOP exp                        {context_check(STORE, $1);}
-                | IF exp                                        {$1 = (struct lbs *) newlblrec(); $1->for_jmp_false = reserve_loc();}
+                | IF exp                                        {$1 = (struct lbs *) create_label(); $1->for_jmp_false = reserve_loc();}
                     THEN commands                               {$1->for_goto = reserve_loc();}
                     ELSE                                        {back_patch($1->for_jmp_false, JMP_FALSE, gen_label());}
                         commands
                   END                                           {back_patch($1->for_goto, GOTO, gen_label());}
                 /* | IF exp THEN commands END                      {;} /* @TODO: Ver como esse aqui funciona */
-                | WHILE                                         {$1 = (struct lbs *) newlblrec(); $1->for_goto = gen_label();}
+                | WHILE                                         {$1 = (struct lbs *) create_label(); $1->for_goto = gen_label();}
                     exp                                         {$1->for_jmp_false = reserve_loc();}
                   DO
                     commands
@@ -100,6 +101,6 @@ exp:            NUMBER                                          {gen_code(LD_INT
 %%
 
 void yyerror(char *s) {
-    printf("\e[0;31m" "Problema com a analise sintatica!\n");
-    printf("Erro: %s\n" "\e[0m", s);
+    printf(RED "Problema com a analise sintatica!\n");
+    printf("Erro: %s\n" RESET, s);
 }

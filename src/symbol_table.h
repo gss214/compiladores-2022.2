@@ -5,13 +5,11 @@
 #include <string.h>
 #include "code_generator.h"
 
-struct symrec {
+typedef struct symrec {
     char* name; // nome do simbolo
     int offset; // deslocamento dos dados
     struct symrec* next; // ponteiro para o proximo
-};
-
-typedef struct symrec symrec;
+} symrec;
 
 // Inicializa a lista vazia
 static symrec* sym_table = (symrec *) 0;

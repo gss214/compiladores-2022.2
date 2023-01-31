@@ -25,10 +25,10 @@ static inline char* insert_yyval(char* text) {
 }
 
 // Esvazia a lista de strings
-static inline void clear_yyval(str* ptr) {
+static inline void clear_yyval_list(str* ptr) {
     if (ptr == NULL) return;
 
-    clear_yyval(ptr->next);
+    clear_yyval_list(ptr->next);
     free(ptr);
 }
 

@@ -21,20 +21,20 @@ struct instruction {
     int arg;
 };
 
-static struct instruction code[999];
-static int stack[999];
+static struct instruction code[999]; // Armazena programa (read only)
+static int stack[999];               // Armazena dados
 
-static struct instruction ir;
-static int pc = 0;
-static int ar = 0;
-static int top = 0;
+static struct instruction ir;        // Registrador de instrucao (Instruction Register)
+static int pc = 0;                   // Registrador de endereço de programa (Program Counter)
+static int ar = 0;                   // Registrador de ativacao (Activation Register)
+static int top = 0;                  // Registrador de topo da pilha (Top Register)
 
 static inline void fetch_execute_cycle() { 
     
     FILE* object_code = fopen("out/object.ogui", "w+");
 
     do {
-        // Fetch
+        // Carrega
         ir = code[pc++];
         fprintf(object_code, "%2d: %-12s%d\n", pc - 1, op_name[ir.op], ir.arg);
 
