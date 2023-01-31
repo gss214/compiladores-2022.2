@@ -1,0 +1,15 @@
+let
+    integer a, inc, fat;
+in
+    inc := 1;
+    fat := 1;
+    read a;
+
+    while (inc a <) do
+        fat := fat inc *;
+        inc := inc 1 +;
+    end;
+
+    fat := fat a *;
+    write fat;
+end
