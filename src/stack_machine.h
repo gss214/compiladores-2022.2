@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include <stdio.h>
+#include <math.h>
 
 // Representacao interna das operacoes
 enum code_ops { HALT, STORE, JMP_FALSE, GOTO,
@@ -120,7 +121,7 @@ static inline void fetch_execute_cycle() {
                                 top--;
                                 break;
 
-            case PWR:           stack[top-1].intval = stack[top-1].intval * stack[top].intval;
+            case PWR:           stack[top-1].intval = pow(stack[top-1].intval, stack[top].intval);
                                 top--;
                                 break;
 
