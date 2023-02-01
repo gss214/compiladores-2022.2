@@ -28,16 +28,18 @@ in		    				{return IN;}
 integer						{return INTEGER;}
 let			    			{return LET;}
 read			    		{return READ;}
+read_ft						{return READ_FT;}
 skip						{return SKIP;}
 then						{return THEN;}
 while						{return WHILE;}
 write						{return WRITE;}
+write_ft					{return WRITE_FT;}
 
 {COMMENT_LINE}				{;}
 {COMMENT_BLOCK}				{;}
 {ID}                        {yylval.id = (char *) insert_yyval(yytext); return IDENTIFIER;}
-{NUMBER_FLOAT}				{yylval.intval = atoi(yytext); return NUMBER;} /* @TODO: float */
-{NUMBER_INTEGER}			{yylval.intval = atoi(yytext); return NUMBER;}
+{NUMBER_FLOAT}				{yylval.floatval = atof(yytext); return NUMBER_FLOAT;} /* @TODO: float */
+{NUMBER_INTEGER}			{yylval.intval = atoi(yytext); return NUMBER_INTEGER;}
 {SPACE}						{;}
 .							{return(yytext[0]);}
 %%
