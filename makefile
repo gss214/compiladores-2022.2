@@ -1,6 +1,6 @@
 CXX=gcc
 
-CFLAGS=-std=gnu99
+CFLAGS=-std=gnu99 -lm
 DEBUGFLAGS=-Wall -g -fsanitize=address -fno-omit-frame-pointer
 
 TARGET ?= Run
