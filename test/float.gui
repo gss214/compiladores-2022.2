@@ -1,0 +1,10 @@
+let 
+    integer a;
+    float b;
+in 
+    read a;
+    read_ft b;
+
+    write a;
+    write_ft b;
+end
