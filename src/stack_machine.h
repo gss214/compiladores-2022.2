@@ -96,23 +96,113 @@ static inline void fetch_execute_cycle() {
             case LD_VAR:        stack[++top] = stack[ar+ir.arg.intval];
                                 break;
 
-            case LT:            if (stack[top-1].intval < stack[top].intval)
-                                    stack[--top].intval = 1;
-                                else
-                                    stack[--top].intval = 0;
+            case LT:            switch (stack[top-1].type) {
+                                    case INTVAL:
+                                        switch (stack[top].type) {
+                                            case INTVAL:
+                                                if (stack[top-1].intval < stack[top].intval)
+                                                    stack[--top].intval = 1;
+                                                else
+                                                    stack[--top].intval = 0;
+                                                break;
+                                            case FLOATVAL:
+                                                if ((float) stack[top-1].intval < stack[top].floatval)
+                                                    stack[--top].intval = 1;
+                                                else
+                                                    stack[--top].intval = 0;
+                                                break;
+                                        }
+                                        break;
+                                    case FLOATVAL:
+                                        switch (stack[top].type) {
+                                            case INTVAL:
+                                                if (stack[top-1].floatval < (float) stack[top].intval)
+                                                    stack[--top].intval = 1;
+                                                else
+                                                    stack[--top].intval = 0;
+                                                break;
+                                            case FLOATVAL:
+                                                if (stack[top-1].floatval < stack[top].floatval)
+                                                    stack[--top].intval = 1;
+                                                else
+                                                    stack[--top].intval = 0;
+                                                break;
+                                        }
+                                    break;
+                                }
                                 break;
 
-            case EQ:            if (stack[top-1].intval == stack[top].intval)
-                                    stack[--top].intval = 1;
-                                else
-                                    stack[--top].intval = 0;
+            case EQ:            switch (stack[top-1].type) {
+                                    case INTVAL:
+                                        switch (stack[top].type) {
+                                            case INTVAL:
+                                                if (stack[top-1].intval == stack[top].intval)
+                                                    stack[--top].intval = 1;
+                                                else
+                                                    stack[--top].intval = 0;
+                                                break;
+                                            case FLOATVAL:
+                                                if ((float) stack[top-1].intval == stack[top].floatval)
+                                                    stack[--top].intval = 1;
+                                                else
+                                                    stack[--top].intval = 0;
+                                                break;
+                                        }
+                                        break;
+                                    case FLOATVAL:
+                                        switch (stack[top].type) {
+                                            case INTVAL:
+                                                if (stack[top-1].floatval == (float) stack[top].intval)
+                                                    stack[--top].intval = 1;
+                                                else
+                                                    stack[--top].intval = 0;
+                                                break;
+                                            case FLOATVAL:
+                                                if (stack[top-1].floatval == stack[top].floatval)
+                                                    stack[--top].intval = 1;
+                                                else
+                                                    stack[--top].intval = 0;
+                                                break;
+                                        }
+                                    break;
+                                }
                                 break;
 
-            case GT:            if (stack[top-1].intval > stack[top].intval)
-                                    stack[--top].intval = 1;
-                                else
-                                    stack[--top].intval = 0;
-                                top--;
+            case GT:            switch (stack[top-1].type) {
+                                    case INTVAL:
+                                        switch (stack[top].type) {
+                                            case INTVAL:
+                                                if (stack[top-1].intval > stack[top].intval)
+                                                    stack[--top].intval = 1;
+                                                else
+                                                    stack[--top].intval = 0;
+                                                break;
+                                            case FLOATVAL:
+                                                if ((float) stack[top-1].intval > stack[top].floatval)
+                                                    stack[--top].intval = 1;
+                                                else
+                                                    stack[--top].intval = 0;
+                                                break;
+                                        }
+                                        break;
+                                    case FLOATVAL:
+                                        switch (stack[top].type) {
+                                            case INTVAL:
+                                                if (stack[top-1].floatval > (float) stack[top].intval)
+                                                    stack[--top].intval = 1;
+                                                else
+                                                    stack[--top].intval = 0;
+                                                break;
+                                            case FLOATVAL:
+                                                if (stack[top-1].floatval > stack[top].floatval)
+                                                    stack[--top].intval = 1;
+                                                else
+                                                    stack[--top].intval = 0;
+                                                break;
+                                        }
+                                    break;
+                                }
+                                // top--; // ???????????????????
                                 break;
 
             // TODO: Melhorar tratamento de erro
@@ -141,7 +231,6 @@ static inline void fetch_execute_cycle() {
                                 }
                                 top--;
                                 break;
-
 
             case SUB:           switch (stack[top-1].type) {
                                     case INTVAL:
@@ -263,7 +352,8 @@ static inline void fetch_execute_cycle() {
                                 top--;
                                 break;
 
-            default:            printf("Internal Error: Memory Dump\n");
+            default:            printf(RED "Operação %d inválida\n" RESET, ir.op);
+                                exit(1);
                                 break;
         }
     } while (ir.op != HALT);
