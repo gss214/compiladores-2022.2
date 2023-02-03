@@ -1,9 +1,11 @@
 #ifndef STACK_MACHINE_H
 #define STACK_MACHINE_H
 
-#include <string.h>
-#include <stdio.h>
 #include <math.h>
+#include <stdio.h>
+#include <string.h>
+#include "utils.h"
+
 
 // Representacao interna das operacoes
 enum code_ops { HALT, STORE, JMP_FALSE, GOTO,
@@ -17,19 +19,27 @@ static char* op_name[] = { "halt", "store", "jmp_false", "goto",
                            "in_int", "in_float", "out_int", "out_float",
                            "lt", "eq", "gt", "add", "sub", "mult", "div", "pwr" };
 
+enum type {
+    INTVAL,
+    FLOATVAL
+};
+
 // Tipos de dado da pilha
-static union stack_t {
-    int intval;
-    float floatval;
+static struct stack_t {
+    union {
+        int intval;
+        float floatval;
+    };
+    enum type type;
 } stack_t;
 
 struct instruction {
     enum code_ops op;
-    union stack_t arg;
+    struct stack_t arg;
 };
 
 static struct instruction code[999]; // Armazena programa (read only)
-static union stack_t stack[999];     // Armazena dados
+static struct stack_t stack[999];     // Armazena dados
 
 static struct instruction ir;        // Registrador de instrucao (Instruction Register)
 static int pc = 0;                   // Registrador de endereço de programa (Program Counter)
@@ -105,23 +115,151 @@ static inline void fetch_execute_cycle() {
                                 top--;
                                 break;
 
-            case ADD:           stack[top-1].intval = stack[top-1].intval + stack[top].intval;
+            // TODO: Melhorar tratamento de erro
+            case ADD:           switch (stack[top-1].type) {
+                                    case INTVAL:
+                                        switch (stack[top].type) {
+                                            case INTVAL:
+                                                stack[top-1].intval = stack[top-1].intval + stack[top].intval;
+                                                break;
+                                            case FLOATVAL:
+                                                stack[top-1].floatval = (float)stack[top-1].intval + stack[top].floatval;
+                                                stack[top-1].type = FLOATVAL;
+                                                break;
+                                        }
+                                        break;
+                                    case FLOATVAL:
+                                        switch (stack[top].type) {
+                                            case INTVAL:
+                                                stack[top-1].floatval = stack[top-1].floatval + (float)stack[top].intval;
+                                                break;
+                                            case FLOATVAL:
+                                                stack[top-1].floatval = stack[top-1].floatval + stack[top].floatval;
+                                                break;
+                                        }
+                                    break;
+                                }
                                 top--;
                                 break;
 
-            case SUB:           stack[top-1].intval = stack[top-1].intval - stack[top].intval;
+
+            case SUB:           switch (stack[top-1].type) {
+                                    case INTVAL:
+                                        switch (stack[top].type) {
+                                            case INTVAL:
+                                                stack[top-1].intval = stack[top-1].intval - stack[top].intval;
+                                                break;
+                                            case FLOATVAL:
+                                                stack[top-1].floatval = (float)stack[top-1].intval - stack[top].floatval;
+                                                stack[top-1].type = FLOATVAL;
+                                                break;
+                                        }
+                                        break;
+                                    case FLOATVAL:
+                                        switch (stack[top].type) {
+                                            case INTVAL:
+                                                stack[top-1].floatval = stack[top-1].floatval - (float)stack[top].intval;
+                                                break;
+                                            case FLOATVAL:
+                                                stack[top-1].floatval = stack[top-1].floatval - stack[top].floatval;
+                                                break;
+                                        }
+                                    break;
+                                }
                                 top--;
                                 break;
 
-            case MULT:          stack[top-1].intval = stack[top-1].intval * stack[top].intval;
+            case MULT:          switch (stack[top-1].type) {
+                                    case INTVAL:
+                                        switch (stack[top].type) {
+                                            case INTVAL:
+                                                stack[top-1].intval = stack[top-1].intval * stack[top].intval;
+                                                break;
+                                            case FLOATVAL:
+                                                stack[top-1].floatval = (float)stack[top-1].intval * stack[top].floatval;
+                                                stack[top-1].type = FLOATVAL;
+                                                break;
+                                        }
+                                        break;
+                                    case FLOATVAL:
+                                        switch (stack[top].type) {
+                                            case INTVAL:
+                                                stack[top-1].floatval = stack[top-1].floatval * (float)stack[top].intval;
+                                                break;
+                                            case FLOATVAL:
+                                                stack[top-1].floatval = stack[top-1].floatval * stack[top].floatval;
+                                                break;
+                                        }
+                                    break;
+                                }
                                 top--;
                                 break;
 
-            case DIV:           stack[top-1].intval = stack[top-1].intval / stack[top].intval;
+            case DIV:           switch (stack[top-1].type) {
+                                    case INTVAL:
+                                        switch (stack[top].type) {
+                                            case INTVAL:
+                                                if (stack[top].intval == 0){
+                                                    printf(RED "Divisão por 0\n" RESET);
+                                                    exit(1);
+                                                }
+                                                stack[top-1].intval = stack[top-1].intval / stack[top].intval;
+                                                break;
+                                            case FLOATVAL:
+                                                if (stack[top].floatval == 0.0){
+                                                    printf(RED "Divisão por 0\n" RESET);
+                                                    exit(1);
+                                                }
+                                                stack[top-1].floatval = (float)stack[top-1].intval / stack[top].floatval;
+                                                stack[top-1].type = FLOATVAL;
+                                                break;
+                                        }
+                                        break;
+                                    case FLOATVAL:
+                                        switch (stack[top].type) {
+                                            case INTVAL:
+                                                if (stack[top-1].intval == 0){
+                                                    printf(RED "Divisão por 0\n" RESET);
+                                                    exit(1);
+                                                }
+                                                stack[top-1].floatval = stack[top-1].floatval / (float)stack[top].intval;
+                                                break;
+                                            case FLOATVAL:
+                                                if (stack[top-1].floatval == 0){
+                                                    printf(RED "Divisão por 0\n" RESET);
+                                                    exit(1);
+                                                }
+                                                stack[top-1].floatval = stack[top-1].floatval / stack[top].floatval;
+                                                break;
+                                        }
+                                    break;
+                                }
                                 top--;
                                 break;
 
-            case PWR:           stack[top-1].intval = pow(stack[top-1].intval, stack[top].intval);
+            case PWR:          switch (stack[top-1].type) {
+                                    case INTVAL:
+                                        switch (stack[top].type) {
+                                            case INTVAL:
+                                                stack[top-1].intval = pow(stack[top-1].intval, stack[top].intval);
+                                                break;
+                                            case FLOATVAL:
+                                                stack[top-1].floatval = pow((float)stack[top-1].intval, stack[top].floatval);
+                                                stack[top-1].type = FLOATVAL;
+                                                break;
+                                        }
+                                        break;
+                                    case FLOATVAL:
+                                        switch (stack[top].type) {
+                                            case INTVAL:
+                                                stack[top-1].floatval = pow(stack[top-1].floatval, (float)stack[top].intval);
+                                                break;
+                                            case FLOATVAL:
+                                                stack[top-1].floatval = pow(stack[top-1].floatval, stack[top].floatval);
+                                                break;
+                                        }
+                                    break;
+                                }
                                 top--;
                                 break;
 

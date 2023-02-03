@@ -1,0 +1,7 @@
+let 
+    integer a;
+in 
+    a := 2 0 /;
+
+    write a;
+end

@@ -1,4 +1,5 @@
 let
 in
     write 1;
+    write_ft 3.1415;
 end

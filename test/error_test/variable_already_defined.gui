@@ -1,0 +1,7 @@
+let 
+    integer a, b, b;
+in 
+    a := 2;
+
+    write a;
+end

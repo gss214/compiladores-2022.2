@@ -48,9 +48,9 @@ int yylex(void);
 
 program:        LET 
                     declarations
-                IN                                              {gen_code(DATA, (union stack_t) {.intval = sym_table->offset});}
+                IN                                              {gen_code(DATA, (struct stack_t) {.intval = sym_table->offset});}
                     commands
-                END                                             {gen_code(HALT, (union stack_t) {.intval =  0}); 
+                END                                             {gen_code(HALT, (struct stack_t) {.intval =  0}); 
                                                                  fetch_execute_cycle();
                                                                  clear_table(sym_table);
                                                                  clear_label_list(lbs_list);
@@ -75,34 +75,34 @@ commands:       /* empty */
 command:        SKIP
                 | READ IDENTIFIER                               {context_check(READ_INT, $2);}
                 | READ_FT IDENTIFIER                            {context_check(READ_FLOAT, $2);}
-                | WRITE exp                                     {gen_code(WRITE_INT, (union stack_t) {.intval = 0});}
-                | WRITE_FT exp                                  {gen_code(WRITE_FLOAT, (union stack_t) {.floatval = 0});}
+                | WRITE exp                                     {gen_code(WRITE_INT, (struct stack_t) {.intval = 0});}
+                | WRITE_FT exp                                  {gen_code(WRITE_FLOAT, (struct stack_t) {.floatval = 0});}
                 | IDENTIFIER ASSGNOP exp                        {context_check(STORE, $1);}
                 | IF exp                                        {$1 = (struct lbs *) create_label(); $1->for_jmp_false = reserve_loc();}
                     THEN commands                               {$1->for_goto = reserve_loc();}
-                  ELSE                                          {back_patch($1->for_jmp_false, JMP_FALSE, (union stack_t) {.intval = gen_label()});}
+                  ELSE                                          {back_patch($1->for_jmp_false, JMP_FALSE, (struct stack_t) {.intval = gen_label()});}
                         commands
-                  END                                           {back_patch($1->for_goto, GOTO, (union stack_t) {.intval = gen_label()});}
+                  END                                           {back_patch($1->for_goto, GOTO, (struct stack_t) {.intval = gen_label()});}
                 /* | IF exp THEN commands END                      {;} /* @TODO: Ver como esse aqui funciona */
                 | WHILE                                         {$1 = (struct lbs *) create_label(); $1->for_goto = gen_label();}
                     exp                                         {$1->for_jmp_false = reserve_loc();}
                   DO
                     commands
-                  END                                           {gen_code(GOTO, (union stack_t) {.intval = $1->for_goto}); 
-                                                                 back_patch($1->for_jmp_false, JMP_FALSE, (union stack_t) {.intval = gen_label()});}
+                  END                                           {gen_code(GOTO, (struct stack_t) {.intval = $1->for_goto}); 
+                                                                 back_patch($1->for_jmp_false, JMP_FALSE, (struct stack_t) {.intval = gen_label()});}
                 ;
 
-exp:            NUMBER_INTEGER                                  {gen_code(LD_INT, (union stack_t) {.intval = $1});}
-                | NUMBER_FLOAT                                  {gen_code(LD_FLOAT, (union stack_t) {.floatval = $1});}
+exp:            NUMBER_INTEGER                                  {gen_code(LD_INT, (struct stack_t) {.intval = $1, .type = INTVAL});}
+                | NUMBER_FLOAT                                  {gen_code(LD_FLOAT, (struct stack_t) {.floatval = $1, .type = FLOATVAL});}
                 | IDENTIFIER                                    {context_check(LD_VAR, $1);}
-                | exp exp '<'                                   {gen_code(LT, (union stack_t) {.intval = 0});}
-                | exp exp '='                                   {gen_code(EQ, (union stack_t) {.intval = 0});}
-                | exp exp '>'                                   {gen_code(GT, (union stack_t) {.intval = 0});}
-                | exp exp '+'                                   {gen_code(ADD, (union stack_t) {.intval = 0});}
-                | exp exp '-'                                   {gen_code(SUB, (union stack_t) {.intval = 0});}
-                | exp exp '*'                                   {gen_code(MULT, (union stack_t) {.intval = 0});}
-                | exp exp '/'                                   {gen_code(DIV, (union stack_t) {.intval = 0});}
-                | exp exp '^'                                   {gen_code(PWR, (union stack_t) {.intval = 0});}
+                | exp exp '<'                                   {gen_code(LT, (struct stack_t) {.intval = 0});}
+                | exp exp '='                                   {gen_code(EQ, (struct stack_t) {.intval = 0});}
+                | exp exp '>'                                   {gen_code(GT, (struct stack_t) {.intval = 0});}
+                | exp exp '+'                                   {gen_code(ADD, (struct stack_t) {.intval = 0});}
+                | exp exp '-'                                   {gen_code(SUB, (struct stack_t) {.intval = 0});}
+                | exp exp '*'                                   {gen_code(MULT, (struct stack_t) {.intval = 0});}
+                | exp exp '/'                                   {gen_code(DIV, (struct stack_t) {.intval = 0});}
+                | exp exp '^'                                   {gen_code(PWR, (struct stack_t) {.intval = 0});}
                 | '(' exp ')'
                 ;
 

@@ -69,7 +69,7 @@ static inline void context_check(enum code_ops operation, char* sym_name) {
         printf(YLW "Erro: variavel '%s' nao foi declarada\n" RESET, sym_name);
         report_errors();
     }
-    else gen_code(operation, (union stack_t) {.intval = identifier->offset});
+    else gen_code(operation, (struct stack_t) {.intval = identifier->offset});
 }
 
 int yyparse();
