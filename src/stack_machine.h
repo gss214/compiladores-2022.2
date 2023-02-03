@@ -53,7 +53,21 @@ static inline void fetch_execute_cycle() {
     do {
         // Carrega
         ir = code[pc++];
-        fprintf(object_code, "%2d: %-12s%d\n", pc - 1, op_name[ir.op], ir.arg.intval);
+
+        // Escreve com o tipo correto no arquivo
+        switch (ir.arg.type) {
+            case INTVAL:
+                fprintf(object_code, "%2d: %-12s%d\n", pc - 1, op_name[ir.op], ir.arg.intval);
+                break;
+
+            case FLOATVAL:
+                fprintf(object_code, "%2d: %-12s%f\n", pc - 1, op_name[ir.op], ir.arg.floatval);
+                break;
+
+            default:
+                fprintf(object_code, "Tipo %d não é reconhecido\n", ir.arg.type);
+                break;
+        }
 
         // Executa
         switch (ir.op) {
