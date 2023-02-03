@@ -1,0 +1,14 @@
+let 
+    integer a, b;
+    float c, d;
+in 
+    a := 10;
+    b := 10;
+    c := 10.01;
+    d := 10.00;
+    
+    write a b =;
+    write c d =;
+    write a c =;
+    write d b =;
+end
