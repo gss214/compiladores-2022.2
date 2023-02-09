@@ -81,9 +81,8 @@ command:        SKIP
                 | IF exp                                        {$1 = (struct lbs *) create_label(); $1->for_jmp_false = reserve_loc();}
                     THEN commands                               {$1->for_goto = reserve_loc();}
                   ELSE                                          {back_patch($1->for_jmp_false, JMP_FALSE, (struct stack_t) {.intval = gen_label()});}
-                        commands
+                    commands
                   END                                           {back_patch($1->for_goto, GOTO, (struct stack_t) {.intval = gen_label()});}
-                /* | IF exp THEN commands END                      {;} /* @TODO: Ver como esse aqui funciona */
                 | WHILE                                         {$1 = (struct lbs *) create_label(); $1->for_goto = gen_label();}
                     exp                                         {$1->for_jmp_false = reserve_loc();}
                   DO

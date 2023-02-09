@@ -76,10 +76,12 @@ static inline void fetch_execute_cycle() {
 
             case READ_INT:      printf("Input: ");
                                 scanf("%d", &stack[ar+ir.arg.intval].intval);
+                                stack[ar+ir.arg.intval].type = INTVAL;
                                 break;
 
             case READ_FLOAT:    printf("Finput: ");
                                 scanf("%f", &stack[ar+ir.arg.intval].floatval); 
+                                stack[ar+ir.arg.intval].type = FLOATVAL;
                                 break;
 
             case WRITE_INT:     printf("Output: %d\n", stack[top--].intval);
@@ -216,10 +218,8 @@ static inline void fetch_execute_cycle() {
                                         }
                                     break;
                                 }
-                                // top--; // ???????????????????
                                 break;
 
-            // TODO: Melhorar tratamento de erro
             case ADD:           switch (stack[top-1].type) {
                                     case INTVAL:
                                         switch (stack[top].type) {
@@ -236,9 +236,11 @@ static inline void fetch_execute_cycle() {
                                         switch (stack[top].type) {
                                             case INTVAL:
                                                 stack[top-1].floatval = stack[top-1].floatval + (float)stack[top].intval;
+                                                stack[top-1].type = FLOATVAL;
                                                 break;
                                             case FLOATVAL:
                                                 stack[top-1].floatval = stack[top-1].floatval + stack[top].floatval;
+                                                stack[top-1].type = FLOATVAL;
                                                 break;
                                         }
                                     break;
@@ -328,7 +330,7 @@ static inline void fetch_execute_cycle() {
                                                 stack[top-1].floatval = stack[top-1].floatval / (float)stack[top].intval;
                                                 break;
                                             case FLOATVAL:
-                                                if (stack[top-1].floatval == 0){
+                                                if (stack[top].floatval == 0){
                                                     printf(RED "Divisão por 0\n" RESET);
                                                     exit(1);
                                                 }
