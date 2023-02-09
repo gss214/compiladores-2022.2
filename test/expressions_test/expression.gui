@@ -1,0 +1,10 @@
+let 
+    integer a;
+    float b;
+in 
+    a := 452 3 * 3 *;
+    b := 452 3 * 3 * 6.333 /;
+    
+    write a;
+    write_ft b; 
+end

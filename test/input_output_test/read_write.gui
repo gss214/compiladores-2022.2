@@ -1,6 +1,10 @@
 let
     integer a;
+    float b;
 in
     read a;
     write a;
+
+    read_ft b;
+    write_ft b;
 end

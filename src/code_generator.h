@@ -20,12 +20,12 @@ static int code_offset = 0;
 static inline int reserve_loc() { return code_offset++; }
 static inline int gen_label() { return code_offset; }
 
-static inline void gen_code(enum code_ops operation, int arg) {
+static inline void gen_code(enum code_ops operation, struct stack_t arg) {
     code[code_offset].op = operation;
     code[code_offset++].arg = arg;
 }
 
-static inline void back_patch(int addr, enum code_ops operation, int arg) {
+static inline void back_patch(int addr, enum code_ops operation, struct stack_t arg) {
     code[addr].op = operation;
     code[addr].arg = arg;
 }
