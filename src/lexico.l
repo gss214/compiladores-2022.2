@@ -5,6 +5,8 @@
 #include "sintatico.h"
 %}
 
+%option yylineno noinput nounput nodefault
+
 /* auxiliares */
 DIGIT             			[0-9]
 SIGN						[+-]
@@ -15,7 +17,7 @@ COMMENT_LINE       			(\/\/).*
 ID               			[a-z][a-z0-9_-]*
 NUMBER_FLOAT               	{SIGN}?{DIGIT}+[.]{DIGIT}*
 NUMBER_INTEGER             	{SIGN}?{DIGIT}+
-SPACE						[ \t\n]+
+SPACE						[ \t\n]
 
 %%
 ":="						{return ASSGNOP;}

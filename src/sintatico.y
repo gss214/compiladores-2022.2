@@ -11,6 +11,7 @@
 
 void yyerror(char*);
 int yylex(void);
+extern int yylineno;
 %}
 
 %union {            // Acrescentar tipos aqui
@@ -108,6 +109,5 @@ exp:            NUMBER_INTEGER                                  {gen_code(LD_INT
 %%
 
 void yyerror(char *s) {
-    printf(RED "Problema com a analise sintatica!\n");
-    printf("Erro: %s\n" RESET, s);
+    printf(RED "Problema com a analise sintatica na linha %d!\n" RESET, yylineno);
 }
