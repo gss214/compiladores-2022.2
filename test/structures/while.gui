@@ -1,0 +1,10 @@
+let
+    integer a, b;
+in
+    read a;
+    read b;
+    while (a b <) do
+        a := a 1 +;
+        write a;
+    end;
+end

@@ -1,8 +1,11 @@
 %{
 #include <stdio.h>
 #include <string.h>
+#include "../src/scanner.h"
 #include "sintatico.h"
 %}
+
+%option yylineno noinput nounput nodefault
 
 /* auxiliares */
 DIGIT             			[0-9]
@@ -11,7 +14,7 @@ SIGN						[+-]
 /* identificadores */
 COMMENT_BLOCK 				[/][*]([^*]|([*]+[^*/]))*[*]+[/]
 COMMENT_LINE       			(\/\/).*
-ID               			[a-z][a-z0-9]*
+ID               			[a-z][a-z0-9_-]*
 NUMBER_FLOAT               	{SIGN}?{DIGIT}+[.]{DIGIT}*
 NUMBER_INTEGER             	{SIGN}?{DIGIT}+
 SPACE						[ \t\n]+
@@ -27,16 +30,18 @@ in		    				{return IN;}
 integer						{return INTEGER;}
 let			    			{return LET;}
 read			    		{return READ;}
+read_ft						{return READ_FT;}
 skip						{return SKIP;}
 then						{return THEN;}
 while						{return WHILE;}
 write						{return WRITE;}
+write_ft					{return WRITE_FT;}
 
-{COMMENT_LINE}				{printf("Comentario em linha\n");}
-{COMMENT_BLOCK}				{printf("Comentario em bloco\n");}
-{ID}                        {yylval.id = (char *) strdup(yytext); return(IDENTIFIER);}
-{NUMBER_FLOAT}				{return NUMBER;}
-{NUMBER_INTEGER}			{return NUMBER;}
+{COMMENT_LINE}				{;}
+{COMMENT_BLOCK}				{;}
+{ID}                        {yylval.id = (char *) insert_yyval(yytext); return IDENTIFIER;}
+{NUMBER_FLOAT}				{yylval.floatval = atof(yytext); return NUMBER_FLOAT;} /* @TODO: float */
+{NUMBER_INTEGER}			{yylval.intval = atoi(yytext); return NUMBER_INTEGER;}
 {SPACE}						{;}
 .							{return(yytext[0]);}
 %%

@@ -1,0 +1,21 @@
+let 
+    integer a;
+    float b, c, d;
+in 
+    // int int
+    a := 2 2 ^;
+
+    // float float
+    b := 2.2 2.2 ^;
+    
+    // float int 
+    c := 2.2 2 ^;
+
+    // int float 
+    d := 2 2.2 ^;
+    
+    write a;
+    write_ft b;
+    write_ft c;
+    write_ft d;
+end

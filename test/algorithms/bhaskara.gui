@@ -1,0 +1,19 @@
+let
+    float a, b, c, delta, raiz_delta, x1, x2;
+in
+    read_ft a;
+    read_ft b;
+    read_ft c;
+
+    delta := b b * 4 a * c * -;
+
+    if (delta 0 <) then
+        write -99999;
+    else 
+        raiz_delta := delta 0.5 ^;
+        x1 := b -1 * raiz_delta + 2 a * /;
+        x2 := b -1 * raiz_delta - 2 a * /;
+        write_ft x1;
+        write_ft x2;
+    end;
+end

@@ -1,0 +1,17 @@
+let 
+    integer a, b;
+in 
+    // read a;
+    // read b;
+    a := 12;
+    b := 120;
+
+    write a;
+    write b;
+
+    if (a b =) then
+        write 1;
+    else
+        write 0;
+    end;
+end

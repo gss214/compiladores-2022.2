@@ -1,0 +1,19 @@
+let
+    integer n, x;
+in
+    read n;
+
+    if n 10 < then
+        x := 1;
+    else
+        x := -1;
+    end;
+    
+    while n 10 < do
+        x := 5 x *;
+        n := n 1 +;
+    end;
+
+    write n;
+    write x;
+end

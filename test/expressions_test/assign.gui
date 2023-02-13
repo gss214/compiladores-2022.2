@@ -1,0 +1,10 @@
+let 
+    integer a;
+    float b;
+in 
+    a := 15;
+    b := 10.48585;
+    
+    write a;
+    write_ft b;
+end
